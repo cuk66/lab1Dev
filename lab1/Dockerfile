@@ -6,9 +6,11 @@ RUN adduser -D appuser
 
 WORKDIR /app
 
-RUN mkdir -p /var/cache/nginx /var/log/nginx /var/lib/nginx/logs /run/nginx && \
-    chown -R appuser:appuser /var/cache/nginx /var/log/nginx /var/lib/nginx /run/nginx
-RUN chown -R appuser:appuser /app && chmod -R 755 /app
+RUN chown -R appuser:appuser /app /var/lib/nginx /run/nginx /var/lib/nginx/logs && \
+    chmod -R 755 /app /var/lib/nginx /run/nginx /var/lib/nginx/logs && \
+    touch /var/lib/nginx/logs/error.log /var/lib/nginx/logs/access.log && \
+    chown appuser:appuser /var/lib/nginx/logs/error.log /var/lib/nginx/logs/access.log && \
+    chmod 644 /var/lib/nginx/logs/error.log /var/lib/nginx/logs/access.log
 
 COPY nginx/nginx.conf /etc/nginx/nginx.conf
 
